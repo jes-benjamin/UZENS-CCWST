@@ -1,0 +1,194 @@
+/* ============================================================================
+   style.css —— 样式层
+   ============================================================================
+   这里只放"外观"，不放任何网站内容。内容全在 content/*.txt 里。
+
+   注意 CSS 变量（--xxx）的用法：很多地方写 var(--pg-title, 回退值)，
+   意思是"如果 JS 设置了 --pg-title 就用它，否则用回退值"。
+   这正是"默认零影响、配置即生效"的实现关键 —— 详见 DOCS.md 第 6 节。
+   ============================================================================ */
+
+/* ---------- 设计变量：深色主题 ---------- */
+:root {
+  --bg: #0a0a0c;
+  --bg2: #141419;
+  --ink: #ececf1;
+  --muted: #8e8e97;
+  --rule: #26252e;
+  --accent: #4ade80;
+  --accent2: #10b981;
+  --max: 1080px;
+  --ease: cubic-bezier(.22, 1, .36, 1);
+
+  /* 字体变量：JS 写入，未写时用 sans 栈 */
+  --font-ui: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+  --font-serif: Georgia, 'Songti SC', serif;
+
+  /* 背景变量：JS 写入；默认无图、用主题色、默认模糊/亮度 */
+  --bg-img: none;
+  --bg-color: var(--bg);
+  --bg-blur: 6px;
+  --bg-bright: .55;
+}
+/* 浅色主题：只覆盖颜色，字体/背景变量保持同一套名字 */
+[data-theme="light"] {
+  --bg: #f2f2f5;
+  --bg2: #ffffff;
+  --ink: #1a1a20;
+  --muted: #6b6b75;
+  --rule: #d8d8de;
+  --accent: #059669;
+  --accent2: #047857;
+  --bg-blur: 8px;
+  --bg-bright: 1.25;
+}
+
+/* ---------- 基础 ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-ui);
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+/* 字体分层应用：标题/按钮/正文各读各的变量，互不影响 */
+.hero-title, .section-title, .showcase-title, .modal-title, .page-hero h1 {
+  font-family: var(--pg-title, var(--font-serif));
+}
+.btn, .nav-links a, .showcase-btn, .modal-close {
+  font-family: var(--pg-btn, var(--font-ui));
+}
+.hero-sub, .section-sub, .card p, .showcase-desc, .modal-hint {
+  font-family: var(--pg-text, var(--font-ui));
+}
+
+/* ---------- 背景两层 ---------- */
+.background-layer {
+  position: fixed; inset: 0; z-index: -2;
+  background-color: var(--bg-color);
+  background-image: var(--bg-img);
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+  filter: blur(var(--bg-blur)) brightness(var(--bg-bright));
+}
+.background-overlay {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 15% 10%, rgba(16,185,129,.28), transparent 70%),
+    radial-gradient(50% 40% at 85% 8%, rgba(74,222,128,.22), transparent 70%),
+    radial-gradient(60% 50% at 50% 100%, rgba(16,185,129,.12), transparent 70%),
+    linear-gradient(180deg, rgba(10,10,12,.35), rgba(10,10,12,.8));
+}
+.background-overlay.tone-blue {
+  background:
+    radial-gradient(60% 50% at 15% 10%, rgba(59,130,246,.30), transparent 70%),
+    radial-gradient(50% 40% at 85% 8%, rgba(96,165,250,.24), transparent 70%),
+    linear-gradient(180deg, rgba(10,10,12,.35), rgba(10,10,12,.8));
+}
+.background-overlay.tone-purple {
+  background:
+    radial-gradient(60% 50% at 15% 10%, rgba(167,139,250,.30), transparent 70%),
+    radial-gradient(50% 40% at 85% 8%, rgba(192,132,252,.24), transparent 70%),
+    linear-gradient(180deg, rgba(10,10,12,.35), rgba(10,10,12,.8));
+}
+
+/* ---------- 导航 ---------- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: .85rem clamp(1rem, 4vw, 2.5rem);
+  border-bottom: 1px solid transparent; transition: background .3s, border-color .3s;
+}
+.nav.scrolled { background: color-mix(in srgb, var(--bg) 78%, transparent); backdrop-filter: blur(14px); border-bottom-color: var(--rule); }
+.brand { display: flex; align-items: center; gap: .6rem; font-weight: 800; letter-spacing: -.02em; }
+.brand-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 16px var(--accent); }
+.nav-right { display: flex; align-items: center; gap: 1.2rem; }
+/* 网页名称（题头）：由各页 txt 的 pageName 配置，引擎写入；不配置时回退标题 */
+.page-name { font-size: .9rem; font-weight: 700; color: var(--accent); letter-spacing: .02em; white-space: nowrap; }
+.nav-links { display: flex; gap: 1.2rem; }
+.nav-links a { font-size: .92rem; color: var(--muted); transition: color .2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--accent); }
+.lang-seg { display: flex; gap: 2px; border: 1px solid var(--rule); border-radius: 100px; padding: 3px; }
+.lang-seg button { border: 0; background: transparent; color: var(--muted); font-size: .72rem; font-weight: 700; padding: 3px 9px; border-radius: 100px; }
+.lang-seg button.active { background: var(--accent); color: #0a0a0c; }
+.theme-toggle { border: 1px solid var(--rule); background: var(--bg2); color: var(--ink); width: 34px; height: 34px; border-radius: 50%; font-size: 1rem; }
+
+/* ---------- 首屏 ---------- */
+main { width: min(100% - 2rem, var(--max)); margin: 0 auto; }
+.hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 1rem; }
+.eyebrow, .section-tag { text-transform: uppercase; letter-spacing: .22em; font-size: .75rem; color: var(--accent); font-weight: 700; }
+.hero-title { font-size: clamp(2.2rem, 7vw, 4.6rem); line-height: 1.15; letter-spacing: -.03em; min-height: 1.2em; }
+.hero-sub { color: var(--muted); font-size: clamp(1rem, 2.5vw, 1.3rem); }
+.accent { color: var(--accent); }
+.cursor { display: inline-block; width: .5ch; margin-left: 2px; background: var(--accent); color: transparent; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.hero-actions { display: flex; gap: .8rem; margin-top: 1rem; flex-wrap: wrap; justify-content: center; }
+.scroll-hint { margin-top: 3rem; color: var(--faint, var(--muted)); font-size: .8rem; letter-spacing: .1em; }
+
+/* ---------- 按钮 ---------- */
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: .8rem 1.6rem; border-radius: 100px; font-weight: 700; font-size: .92rem; border: 1px solid var(--rule); transition: transform .25s var(--ease), filter .25s; }
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: linear-gradient(135deg, var(--accent2), var(--accent)); color: #0a0a0c; border-color: transparent; }
+.btn-ghost { background: var(--bg2); color: var(--ink); }
+
+/* ---------- 区块与卡片 ---------- */
+.section { padding: 6vh 0; }
+.section-title { font-size: clamp(1.8rem, 5vw, 3rem); margin: .4rem 0 2rem; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+.card { background: color-mix(in srgb, var(--bg2) 92%, transparent); border: 1px solid var(--rule); border-radius: 16px; padding: 1.8rem; transition: transform .3s var(--ease), border-color .3s; }
+.card:hover { transform: translateY(-5px); border-color: var(--accent); }
+.card-icon { font-size: 1.6rem; color: var(--accent); margin-bottom: .8rem; }
+.card h3 { font-size: 1.2rem; margin-bottom: .5rem; }
+.card p { color: var(--muted); font-size: .92rem; }
+.work-badge { display: inline-block; font-size: .7rem; color: var(--accent); border: 1px solid var(--rule); border-radius: 100px; padding: .15rem .7rem; margin-bottom: .8rem; }
+
+/* ---------- 图片展示块 ---------- */
+.showcase {
+  --sc-scale: 1;
+  margin: 0 auto; width: 100%; max-width: 560px;
+  display: flex; flex-direction: column;
+  background: var(--bg2); border: 1px solid var(--rule);
+  border-radius: calc(20px * var(--sc-scale)); overflow: hidden;
+  box-shadow: 0 16px 44px rgba(0,0,0,.16);
+}
+.showcase-media { width: 100%; overflow: hidden; }
+.showcase-media img { display: block; width: 100%; height: auto; }
+.showcase-body { display: flex; flex-direction: column; align-items: flex-start; gap: calc(10px * var(--sc-scale)); padding: calc(22px * var(--sc-scale)) calc(24px * var(--sc-scale)); }
+.showcase-title { font-size: calc(1.15rem * var(--sc-scale)); }
+.showcase-desc { font-size: calc(.92rem * var(--sc-scale)); color: var(--muted); }
+.showcase-btn { margin-top: calc(6px * var(--sc-scale)); padding: calc(.7rem * var(--sc-scale)) calc(1.5rem * var(--sc-scale)); border-radius: calc(14px * var(--sc-scale)); background: linear-gradient(135deg, var(--accent2), var(--accent)); color: #0a0a0c; font-weight: 700; border: 0; }
+
+/* ---------- 页脚 ---------- */
+.footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 3rem 1rem; }
+.page-hero { padding: 22vh 0 4vh; }
+
+/* ---------- 进场动画 ---------- */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- Toast 与弹窗 ---------- */
+.toast { position: fixed; left: 50%; bottom: 2rem; transform: translate(-50%, 20px); background: var(--bg2); color: var(--ink); border: 1px solid var(--rule); border-left: 3px solid var(--accent); padding: .8rem 1.4rem; border-radius: 10px; opacity: 0; pointer-events: none; transition: .3s var(--ease); z-index: 100; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.modal-mask { position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.66); backdrop-filter: blur(6px); opacity: 0; visibility: hidden; transition: .3s var(--ease); padding: 1.5rem; }
+.modal-mask.open { opacity: 1; visibility: visible; }
+.modal-card { position: relative; width: min(100%, 440px); background: var(--bg2); border: 1px solid var(--rule); border-radius: 18px; padding: 2.4rem 2rem 2rem; text-align: center; }
+.modal-close { position: absolute; top: .8rem; right: .8rem; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--rule); background: transparent; color: var(--muted); }
+.modal-title { font-size: 1.5rem; margin-bottom: .6rem; }
+.modal-hint { color: var(--muted); font-family: var(--modal-font, var(--font-ui)); }
+
+@media (max-width: 640px) {
+  .nav-right { gap: .6rem; }
+  .page-name { display: none; }
+  .nav-links { display: none; }
+  .showcase { max-width: 100% !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; }
+  .cursor { animation: none; }
+}

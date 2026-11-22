@@ -1,0 +1,58 @@
+/* index.txt —— 首页配置（每个页面一个 txt，只管自己的内容）
+   新增页面：复制本文件 + 在 HTML 里加一行 <script src>，不影响其它页面。 */
+window.SITE_PAGES = window.SITE_PAGES || {};
+
+window.SITE_PAGES.index = {
+
+    /* 本页网页名称（题头）：四语言对象，更新浏览器标签 + 导航可见标题 */
+    pageName: { zh: '首页', en: 'Home', tw: '首頁', ja: 'ホーム' },
+
+    /* 本页字体：四类互不影响，'#' = 用整体字体 */
+    font: { title: '#', button: '#', text: '#', modal: '#' },
+
+    /* 打字机文字：full 完整句，highlight 末尾高亮词 */
+    typed: { full: '大标题', highlight: '标题' },
+
+    /* 数据驱动列表：一个数组 = 一组卡片，对应 HTML 里的 <div data-list="features"></div> */
+    features: [
+        {
+            icon: '✦',
+            desc: { zh: '小标题', en: 'Subtitle', tw: '小標題', ja: 'サブタイトル' },
+            paras: [{ zh: '内容', en: 'Content', tw: '內容', ja: '内容' }]
+        },
+        {
+            icon: '◆',
+            desc: { zh: '小标题', en: 'Subtitle', tw: '小標題', ja: 'サブタイトル' },
+            paras: [{ zh: '内容', en: 'Content', tw: '內容', ja: '内容' }]
+        },
+        {
+            icon: '●',
+            desc: { zh: '小标题', en: 'Subtitle', tw: '小標題', ja: 'サブタイトル' },
+            paras: [{ zh: '内容', en: 'Content', tw: '內容', ja: '内容' }]
+        }
+    ],
+
+    /* 本页文案：与 global.txt 的 i18n 合并，同名字段这里优先 */
+    i18n: {
+        zh: {
+            eyebrow: '小标题', hero_sub: '副标题',
+            btn_primary: '按钮', btn_secondary: '按钮',
+            section_tag: '小标题', section_title: '大标题', scroll_hint: '内容'
+        },
+        en: {
+            eyebrow: 'Subtitle', hero_sub: 'Sub title',
+            btn_primary: 'Button', btn_secondary: 'Button',
+            section_tag: 'Subtitle', section_title: 'Big title', scroll_hint: 'Content'
+        },
+        tw: {
+            eyebrow: '小標題', hero_sub: '副標題',
+            btn_primary: '按鈕', btn_secondary: '按鈕',
+            section_tag: '小標題', section_title: '大標題', scroll_hint: '內容'
+        },
+        ja: {
+            eyebrow: 'サブタイトル', hero_sub: 'サブタイトル',
+            btn_primary: 'ボタン', btn_secondary: 'ボタン',
+            section_tag: 'サブタイトル', section_title: '大見出し', scroll_hint: 'コンテンツ'
+        }
+    }
+};

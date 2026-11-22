@@ -1,0 +1,115 @@
+/* ============================================================================
+   global.txt —— 全站配置（所有页面都会加载它）
+   ============================================================================
+   【重要】这个文件虽然后缀是 .txt，但它的内容其实是 JavaScript 代码。
+   页面用 <script src="content/global.txt"></script> 把它当脚本加载，
+   所以里面写的是 "window.XXX = ..." 这样的赋值语句，而不是 JSON。
+
+   为什么要这样做？因为浏览器用 file:// 双击打开网页时，用 fetch()
+   去读 .txt 会被浏览器的安全策略（CORS）拦截；但 <script src> 加载
+   本地文件是允许的。这样就能做到"双击即用、无需服务器"。
+
+   【规则】
+   1. 只改单引号 ' ' 里面的文字；不要删掉逗号 , 和花括号 {} 方括号 []。
+   2. 所有页面共享这一份配置；每个页面自己的内容放在各自的页面 txt 里。
+   ============================================================================ */
+
+/* 第一步：先确保 window.SITE_PAGES 这个"配置仓库"存在。
+   "window.SITE_PAGES = window.SITE_PAGES || {}" 的意思是：
+   如果它已经存在就沿用，不存在就新建一个空对象。
+   这样多个 txt 文件依次加载时，不会互相覆盖，而是往同一个仓库里放东西。 */
+window.SITE_PAGES = window.SITE_PAGES || {};
+
+/* 第二步：往仓库里放一个叫 "global" 的配置对象。
+   引擎（engine.js）会读取 window.SITE_PAGES.global 拿到全站配置。 */
+window.SITE_PAGES.global = {
+
+    /* ---- 站点信息 ---- */
+    siteInfo: {
+        title: 'UZENS CCWST',     // 全站名称：UZENS Convenient Configure WebSite Technology
+        description: '网站描述内容',
+        logo: ''                  // Logo 图片地址，留空则用文字站名
+    },
+
+    /* ---- 网站整体字体 ----
+       '#' 是"占位符"，意思是"不启用，用默认字体"。
+       这套模板所有可选项都用 '#' 或空字符串表示"没配置"，
+       这样默认状态下外观和模板一模一样（这叫"零影响默认"）。 */
+    font: {
+        site: '#'                 // 例：改成 '"微软雅黑", sans-serif'
+    },
+
+    /* ---- 网站背景 ----
+       image 留空 → 用 CSS 里默认的渐变；填了图片地址 → 显示图片。
+       blur / brightness 填 '#' → 用默认；填数字 → 自定义。 */
+    background: {
+        image: '',
+        color: '#',
+        blur: '#',
+        brightness: '#',
+        overlay: true,            // 是否显示渐变光晕层
+        tone: '#'                 // 光晕色调：'#' 绿 / blue 蓝 / purple 紫
+    },
+
+    /* ---- 网站图片滤镜（可选，"修改图片功能"的配置入口）----
+       这里填的滤镜会作用到首页的展示图上；某张图自己的 fx 优先于这里。
+       所有字段都写 '#' 或保持默认值 = 不生效（默认零影响）。
+       字段：brightness 亮度(默认1) contrast 对比度(1) saturate 饱和度(1)
+             grayscale 灰度(0) blur 模糊px(0) sepia 复古(0) invert 反色(0)
+             hueRotate 色相旋转deg(0) opacity 不透明度(1)
+             rotate 旋转deg(0) scale 缩放(1) flipX/flipY 翻转(false)
+       例：imageFx: { brightness: 0.9, grayscale: 0.3, rotate: 5 } */
+    imageFx: { /* 例：brightness: '#', blur: '#' */
+    },
+
+    /* ---- 导航菜单 ----
+       每一项是一个对象：href 是链接，i18n 是文字字段的名字（去下面的字典里查），
+       page 用来标记"当前在哪个页面"，引擎据此给当前页导航项加高亮。 */
+    nav: [
+        { i18n: 'nav_home',  href: './index.html', page: 'index' },
+        { i18n: 'nav_about', href: './about.html', page: 'about' }
+    ],
+
+    /* ---- 全站通用文案（四语言字典）----
+       zh=简体中文, en=英文, tw=繁体中文, ja=日文。
+       每个页面的 txt 里也有自己的 i18n，引擎会把两者"按语言合并"成一张大字典。
+       页面元素上写 data-i18n="字段名"，引擎就去这张字典里取当前语言的文字填进去。 */
+    i18n: {
+        zh: {
+            docTitle: '标题',
+            brand: '标题',
+            nav_home: '首页', nav_about: '关于',
+            theme_toggle: '切换主题',
+            footer: '内容',
+            toast_unset: '弹窗内容',
+            modal_title: '标题', modal_hint: '弹窗内容', modal_close: '按钮'
+        },
+        en: {
+            docTitle: 'Title',
+            brand: 'Brand',
+            nav_home: 'Home', nav_about: 'About',
+            theme_toggle: 'Toggle theme',
+            footer: 'Content',
+            toast_unset: 'Not configured',
+            modal_title: 'Title', modal_hint: 'Content', modal_close: 'Close'
+        },
+        tw: {
+            docTitle: '標題',
+            brand: '標題',
+            nav_home: '首頁', nav_about: '關於',
+            theme_toggle: '切換主題',
+            footer: '內容',
+            toast_unset: '彈窗內容',
+            modal_title: '標題', modal_hint: '彈窗內容', modal_close: '按鈕'
+        },
+        ja: {
+            docTitle: 'タイトル',
+            brand: 'タイトル',
+            nav_home: 'ホーム', nav_about: '概要',
+            theme_toggle: 'テーマ切替',
+            footer: 'コンテンツ',
+            toast_unset: '未設定',
+            modal_title: 'タイトル', modal_hint: '内容', modal_close: '閉じる'
+        }
+    }
+};

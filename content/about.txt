@@ -1,0 +1,48 @@
+/* ============================================================================
+   about.txt —— 关于页配置
+   ============================================================================
+   和 index.txt 结构完全一样，只是内容不同。
+   HTML 里的 <body data-page="about"> 告诉引擎"这页去读 window.SITE_PAGES.about"。
+   ============================================================================ */
+window.SITE_PAGES = window.SITE_PAGES || {};
+
+window.SITE_PAGES.about = {
+
+    /* ---- 本页网页名称（题头）----
+       四语言对象：引擎用它更新浏览器标签标题和导航栏的可见标题。 */
+    pageName: { zh: '关于', en: 'About', tw: '關於', ja: '概要' },
+
+    /* ---- 本页字体 ---- */
+    font: { title: '#', button: '#', text: '#', modal: '#' },
+
+    /* ---- 作品列表：数据驱动卡片 ----
+       title 是四语言对象；url 留空点击弹"未配置"提示；
+       tag 是卡片上的小标签文字。 */
+    works: [
+        {
+            title: { zh: '标题', en: 'Title', tw: '標題', ja: 'タイトル' },
+            desc:  { zh: '内容', en: 'Content', tw: '內容', ja: '内容' },
+            tag:   { zh: '内容', en: 'Tag', tw: '內容', ja: 'タグ' },
+            url: ''
+        },
+        {
+            title: { zh: '标题', en: 'Title', tw: '標題', ja: 'タイトル' },
+            desc:  { zh: '内容', en: 'Content', tw: '內容', ja: '内容' },
+            tag:   { zh: '内容', en: 'Tag', tw: '內容', ja: 'タグ' },
+            url: ''
+        },
+        {
+            title: { zh: '标题', en: 'Title', tw: '標題', ja: 'タイトル' },
+            desc:  { zh: '内容', en: 'Content', tw: '內容', ja: '内容' },
+            tag:   { zh: '内容', en: 'Tag', tw: '內容', ja: 'タグ' },
+            url: ''
+        }
+    ],
+
+    i18n: {
+        zh: { docTitle: '标题', eyebrow: '小标题', page_title: '大标题', page_sub: '副标题' },
+        en: { docTitle: 'Title', eyebrow: 'Subtitle', page_title: 'Big title', page_sub: 'Sub title' },
+        tw: { docTitle: '標題', eyebrow: '小標題', page_title: '大標題', page_sub: '副標題' },
+        ja: { docTitle: 'タイトル', eyebrow: 'サブタイトル', page_title: '大見出し', page_sub: 'サブタイトル' }
+    }
+};

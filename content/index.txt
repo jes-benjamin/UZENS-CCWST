@@ -1,0 +1,89 @@
+/* ============================================================================
+   index.txt —— 首页配置
+   ============================================================================
+   每个页面有自己独立的 txt，只管自己的内容。
+   新增页面时只要新建一个页面 txt + 在 HTML 配置清单里加一行 <script>，
+   不会影响其它页面 —— 这就是"分文件配置"最大的好处。
+   ============================================================================ */
+window.SITE_PAGES = window.SITE_PAGES || {};
+
+window.SITE_PAGES.index = {
+
+    /* ---- 本页网页名称（题头）----
+       四语言对象：引擎用它更新浏览器标签标题和导航栏的可见标题。
+       不填则回退到 i18n.docTitle / global.siteInfo.title。 */
+    pageName: { zh: '首页', en: 'Home', tw: '首頁', ja: 'ホーム' },
+
+    /* ---- 本页字体：四类互不影响，'#' = 用整体字体 ---- */
+    font: { title: '#', button: '#', text: '#', modal: '#' },
+
+    /* ---- 打字机文字 ----
+       full 是完整句子，highlight 是末尾要高亮显示的词。 */
+    typed: { full: '大标题', highlight: '标题' },
+
+    /* ---- 图片展示块：图片在上、文字在下、圆角矩形按钮 ----
+       img    图片地址，留空显示占位图
+       url    按钮链接，留空点击弹"未配置"提示
+       width  整体宽度（任意 CSS 宽度）
+       scale  整体缩放倍数，1 = 原始
+       fx     图片滤镜对象（"修改图片"配置入口，字段见 global.txt 的 imageFx）
+       title/desc/btn 是四语言对象：引擎按当前语言自动取值 */
+    showcase: {
+        img: '',
+        url: '',
+        width: '560px',
+        scale: 1,
+        fx: { /* 例：brightness: 1.1, saturate: 1.2, rotate: 0 */ },
+        title: { zh: '标题', en: 'Title', tw: '標題', ja: 'タイトル' },
+        desc:  { zh: '内容', en: 'Content', tw: '內容', ja: '内容' },
+        btn:   { zh: '按钮', en: 'Button', tw: '按鈕', ja: 'ボタン' }
+    },
+
+    /* ---- 数据驱动列表 ----
+       一个数组 = 一组重复卡片。增删对象就能增删卡片，
+       对应的 HTML 里只需要一个空容器 <div data-list="features"></div>，
+       引擎会调用渲染函数把数组变成卡片插进去。
+       desc/paras 用四语言对象，切语言时自动更新。 */
+    features: [
+        {
+            icon: '✦',
+            desc: { zh: '小标题', en: 'Subtitle', tw: '小標題', ja: 'サブタイトル' },
+            paras: [{ zh: '内容', en: 'Content', tw: '內容', ja: '内容' }]
+        },
+        {
+            icon: '◆',
+            desc: { zh: '小标题', en: 'Subtitle', tw: '小標題', ja: 'サブタイトル' },
+            paras: [{ zh: '内容', en: 'Content', tw: '內容', ja: '内容' }]
+        },
+        {
+            icon: '●',
+            desc: { zh: '小标题', en: 'Subtitle', tw: '小標題', ja: 'サブタイトル' },
+            paras: [{ zh: '内容', en: 'Content', tw: '內容', ja: '内容' }]
+        }
+    ],
+
+    /* ---- 首页自己的文案（四语言）----
+       会和 global.txt 的 i18n 合并；同名字段这里优先。 */
+    i18n: {
+        zh: {
+            docTitle: '标题', eyebrow: '小标题',
+            hero_sub: '副标题', btn_primary: '按钮', btn_secondary: '按钮',
+            section_tag: '小标题', section_title: '大标题', scroll_hint: '内容'
+        },
+        en: {
+            docTitle: 'Title', eyebrow: 'Subtitle',
+            hero_sub: 'Sub title', btn_primary: 'Button', btn_secondary: 'Button',
+            section_tag: 'Subtitle', section_title: 'Big title', scroll_hint: 'Content'
+        },
+        tw: {
+            docTitle: '標題', eyebrow: '小標題',
+            hero_sub: '副標題', btn_primary: '按鈕', btn_secondary: '按鈕',
+            section_tag: '小標題', section_title: '大標題', scroll_hint: '內容'
+        },
+        ja: {
+            docTitle: 'タイトル', eyebrow: 'サブタイトル',
+            hero_sub: 'サブタイトル', btn_primary: 'ボタン', btn_secondary: 'ボタン',
+            section_tag: 'サブタイトル', section_title: '大見出し', scroll_hint: 'コンテンツ'
+        }
+    }
+};

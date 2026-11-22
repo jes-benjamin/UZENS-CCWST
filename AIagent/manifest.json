@@ -1,0 +1,62 @@
+{
+  "project": "UZENS CCWST",
+  "fullName": "UZENS Convenient Configure WebSite Technology",
+  "package": "txt-config-website",
+  "version": "1.1",
+  "description": "零依赖、零构建的静态网站教学源码包：内容拆到 content/*.txt，engine.js 负责渲染。",
+  "license": "AGPL-3.0",
+  "entryPoints": ["index.html", "about.html"],
+  "engine": "engine.js",
+  "configNamespace": "window.SITE_PAGES",
+  "runtimeApiNamespace": "window.UZ",
+  "files": [
+    { "path": "README.md / README.en.md / README.ja.md", "role": "项目介绍，中/英/日三语，顶部互相切换" },
+    { "path": "DOCS.md / DOCS.en.md / DOCS.ja.md", "role": "原理详解，中/英/日三语，顶部互相切换" },
+    { "path": "content/global.txt", "role": "全站配置：siteInfo/font/background/imageFx/nav/i18n" },
+    { "path": "content/index.txt", "role": "首页配置：font/typed/showcase/features/i18n" },
+    { "path": "content/about.txt", "role": "关于页配置：font/works/i18n" },
+    { "path": "content/i18n.txt", "role": "自动翻译 API 配置（默认关闭）" },
+    { "path": "engine.js", "role": "渲染引擎 + 图片修改 API + AI Agent API" },
+    { "path": "style.css", "role": "样式层与 CSS 变量（字体/主题/背景）" },
+    { "path": "index.html", "role": "首页骨架 + 配置清单" },
+    { "path": "about.html", "role": "关于页骨架 + 配置清单" }
+  ],
+  "configSchema": {
+    "global": {
+      "siteInfo": ["title", "description", "logo"],
+      "font": ["site"],
+      "background": ["image", "color", "blur", "brightness", "overlay", "tone"],
+      "imageFx": ["brightness", "contrast", "saturate", "grayscale", "blur", "sepia", "invert", "hueRotate", "opacity", "rotate", "scale", "flipX", "flipY"],
+      "nav": [{ "i18n": "string", "href": "string", "page": "string" }],
+      "i18n": { "zh": "object", "en": "object", "tw": "object", "ja": "object" }
+    },
+    "page": {
+      "font": ["title", "button", "text", "modal"],
+      "pageName": { "zh": "string", "en": "string", "tw": "string", "ja": "string" },
+      "showcase": ["img", "url", "width", "scale", "fx", "title", "desc", "btn"],
+      "features": [{ "icon": "string", "desc": "i18nObject", "paras": ["i18nObject"] }],
+      "works": [{ "tag": "i18nObject", "title": "i18nObject", "desc": "i18nObject", "url": "string" }],
+      "i18n": { "zh": "object", "en": "object", "tw": "object", "ja": "object" }
+    },
+    "i18nConfig": ["enabled", "provider", "targets", "onlyFillMissing", "google", "bing", "youdao"]
+  },
+  "imageFilterFields": {
+    "brightness": 1, "contrast": 1, "saturate": 1, "grayscale": 0, "blur": 0,
+    "sepia": 0, "invert": 0, "hueRotate": 0, "opacity": 1,
+    "rotate": 0, "scale": 1, "flipX": false, "flipY": false
+  },
+  "aiApi": {
+    "namespace": "window.UZ.ai",
+    "version": "1.0",
+    "read": ["describe", "getState", "getConfig", "exportConfig", "getImageInfo"],
+    "mutate": ["setLang", "setTheme", "setText", "setPageName", "setList", "addListItem", "setImage", "setImageFilter", "resetImageFilter", "applyImageFxAll", "showToast", "openModal", "closeModal", "translateTo", "rerender", "apply"],
+    "batch": { "method": "apply", "format": [{ "op": "methodName", "args": [] }] },
+    "persistence": "runtime-only: 修改仅存于内存，刷新失效；永久修改需编辑 content/*.txt"
+  },
+  "conventions": {
+    "placeholder": "'#' 或空值表示不启用/默认，保证零影响",
+    "i18nObject": "{ zh, en, tw, ja }，引擎用 L() 按当前语言取值",
+    "scriptLoading": "用 <script src> 加载 txt，不用 fetch（支持 file:// 双击打开）",
+    "scriptOrder": "global.txt 必须最先，i18n.txt 次之，然后页面 txt，最后 engine.js"
+  }
+}

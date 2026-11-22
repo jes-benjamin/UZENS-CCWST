@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>标题</title>
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
+
+<!-- 配置清单：global 依旧第一，但本页换成 about.txt -->
+<script src="content/global.txt"></script>
+<script src="content/i18n.txt"></script>
+<script src="content/about.txt"></script>
+</head>
+
+<!-- data-page="about" → 引擎读取 window.SITE_PAGES.about -->
+<body data-page="about">
+
+<div class="background-layer"></div>
+<div class="background-overlay"></div>
+
+<nav class="nav">
+  <a href="./index.html" class="brand"><span class="brand-dot"></span><span id="brandText">标题</span></a>
+  <div class="nav-right">
+    <span class="page-name" id="pageName">标题</span>
+    <div class="nav-links" id="navLinks"></div>
+    <div class="lang-seg" id="langSeg"></div>
+    <button class="theme-toggle" id="themeToggle" aria-label="切换主题" data-i18n-aria="theme_toggle">◐</button>
+  </div>
+</nav>
+
+<main>
+  <section class="page-hero">
+    <p class="eyebrow" data-i18n="eyebrow">小标题</p>
+    <h1 class="section-title" data-i18n="page_title">大标题</h1>
+    <p class="hero-sub" data-i18n="page_sub">副标题</p>
+  </section>
+
+  <!-- 作品列表：空容器 data-list="works"，由 about.txt 的 works 数组生成 -->
+  <section class="section">
+    <div class="card-grid" data-list="works"></div>
+  </section>
+</main>
+
+<footer class="footer"><span data-i18n="footer">内容</span></footer>
+
+<div class="modal-mask" id="infoModal" aria-hidden="true">
+  <div class="modal-card">
+    <button class="modal-close" id="infoModalClose" aria-label="关闭">×</button>
+    <h3 class="modal-title" id="infoModalTitle">标题</h3>
+    <p class="modal-hint" id="infoModalHint">弹窗内容</p>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="engine.js"></script>
+</body>
+</html>

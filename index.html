@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>标题</title>
+<meta name="description" content="网站描述内容">
+<link rel="stylesheet" href="style.css">
+<!-- 主题预置：在 CSS 加载前先设好 data-theme，避免闪白 -->
+<script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
+
+<!-- ============================================================
+     网站内容配置清单
+     ★ 这是整套架构的关键：用 <script src> 把 .txt 当 JavaScript 加载。
+       - 为什么不用 fetch()？因为双击 file:// 打开时 fetch 会被 CORS 拦截，
+         而 <script src> 加载本地文件是允许的，所以能"双击即用"。
+       - 顺序：global.txt 必须第一个（提供全站配置），然后是本页 txt。
+       - 新增页面：复制本文件，改 body 的 data-page，再加一行对应 txt。
+     ============================================================ -->
+<script src="content/global.txt"></script>
+<script src="content/i18n.txt"></script>
+<script src="content/index.txt"></script>
+</head>
+
+<!-- body 上的 data-page="index" 告诉引擎：去 window.SITE_PAGES.index 取本页内容 -->
+<body data-page="index">
+
+<!-- 背景两层：底层图片/纯色 + 上层光晕（都可由 global.txt 配置） -->
+<div class="background-layer"></div>
+<div class="background-overlay"></div>
+
+<!-- 顶部导航：里面是空容器，由引擎按 global.txt 的 nav 数组填充 -->
+<nav class="nav">
+  <a href="./index.html" class="brand"><span class="brand-dot"></span><span id="brandText">标题</span></a>
+  <div class="nav-right">
+    <span class="page-name" id="pageName">标题</span>
+    <div class="nav-links" id="navLinks"></div>
+    <div class="lang-seg" id="langSeg"></div>
+    <button class="theme-toggle" id="themeToggle" aria-label="切换主题" data-i18n-aria="theme_toggle">◐</button>
+  </div>
+</nav>
+
+<main>
+  <!-- ===== 首屏：打字机大标题 ===== -->
+  <section class="hero">
+    <p class="eyebrow" data-i18n="eyebrow">小标题</p>
+    <h1 class="hero-title"><span id="typed"></span></h1>
+    <p class="hero-sub" data-i18n="hero_sub">副标题</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#features"><span data-i18n="btn_primary">按钮</span></a>
+      <button class="btn btn-ghost" data-modal><span data-i18n="btn_secondary">按钮</span></button>
+    </div>
+    <p class="scroll-hint" data-i18n="scroll_hint">内容</p>
+  </section>
+
+  <!-- ===== 图片展示块：结构固定，文字/图片/按钮来自 index.txt 的 showcase ===== -->
+  <section class="section">
+    <div class="showcase" id="showcase">
+      <div class="showcase-media"><img id="showcaseImg" alt="图片"></div>
+      <div class="showcase-body">
+        <h3 class="showcase-title" id="showcaseTitle">标题</h3>
+        <p class="showcase-desc" id="showcaseDesc">内容</p>
+        <a class="showcase-btn" id="showcaseBtn" href="#" data-link-unset>
+          <span id="showcaseBtnText">按钮</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 功能卡片：空容器 data-list="features"，由引擎按数组生成卡片 ===== -->
+  <section class="section" id="features">
+    <p class="section-tag" data-i18n="section_tag">小标题</p>
+    <h2 class="section-title" data-i18n="section_title">大标题</h2>
+    <div class="card-grid" data-list="features"></div>
+  </section>
+</main>
+
+<footer class="footer"><span data-i18n="footer">内容</span></footer>
+
+<!-- 通用信息弹窗（按钮 data-modal 触发） -->
+<div class="modal-mask" id="infoModal" aria-hidden="true">
+  <div class="modal-card">
+    <button class="modal-close" id="infoModalClose" aria-label="关闭">×</button>
+    <h3 class="modal-title" id="infoModalTitle">标题</h3>
+    <p class="modal-hint" id="infoModalHint">弹窗内容</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- 引擎放在 body 末尾：此时上面的 DOM 已存在，脚本可以直接操作 -->
+<script src="engine.js"></script>
+</body>
+</html>

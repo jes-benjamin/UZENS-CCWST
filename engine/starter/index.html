@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>标题</title>
+<link rel="stylesheet" href="style.css">
+<!-- 主题预置：CSS 加载前先定主题，避免闪白 -->
+<script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
+
+<!-- ============================================================
+     内容配置清单（整套架构的关键）
+     用 <script src> 把 .txt 当 JS 加载 —— 这样双击 file:// 也能用，
+     因为 <script src> 允许读本地文件，而 fetch() 会被 CORS 拦截。
+     顺序固定：global.txt 必须第一，然后本页 txt，最后引擎。
+     ============================================================ -->
+<script src="content/global.txt"></script>
+<script src="content/index.txt"></script>
+</head>
+
+<!-- body[data-page="index"] 告诉引擎：去 window.SITE_PAGES.index 取本页配置 -->
+<body data-page="index">
+
+<div class="background-layer"></div>
+<div class="background-overlay"></div>
+
+<!-- 导航：空容器由引擎按 global.txt 的 nav 数组填充 -->
+<nav class="nav">
+  <a href="./index.html" class="brand"><span class="brand-dot"></span><span id="brandText">标题</span></a>
+  <div class="nav-right">
+    <span class="page-name" id="pageName">标题</span>
+    <div class="nav-links" id="navLinks"></div>
+    <div class="lang-seg" id="langSeg"></div>
+    <button class="theme-toggle" id="themeToggle" aria-label="切换主题" data-i18n-aria="theme_toggle">◐</button>
+  </div>
+</nav>
+
+<main>
+  <!-- 首屏：data-i18n 的文字由引擎填入，#typed 由打字机填充 -->
+  <section class="hero">
+    <p class="eyebrow" data-i18n="eyebrow">小标题</p>
+    <h1 class="hero-title"><span id="typed"></span></h1>
+    <p class="hero-sub" data-i18n="hero_sub">副标题</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#features"><span data-i18n="btn_primary">按钮</span></a>
+      <button class="btn btn-ghost" data-modal><span data-i18n="btn_secondary">按钮</span></button>
+    </div>
+    <p class="scroll-hint" data-i18n="scroll_hint">内容</p>
+  </section>
+
+  <!-- 数据驱动列表：空容器 data-list="features"，引擎按数组生成卡片 -->
+  <section class="section" id="features">
+    <p class="section-tag" data-i18n="section_tag">小标题</p>
+    <h2 class="section-title" data-i18n="section_title">大标题</h2>
+    <div class="card-grid" data-list="features"></div>
+  </section>
+</main>
+
+<footer class="footer"><span data-i18n="footer">内容</span></footer>
+
+<!-- 通用信息弹窗 -->
+<div class="modal-mask" id="infoModal" aria-hidden="true">
+  <div class="modal-card">
+    <button class="modal-close" id="infoModalClose" aria-label="关闭">×</button>
+    <h3 class="modal-title" id="infoModalTitle">标题</h3>
+    <p class="modal-hint" id="infoModalHint">弹窗内容</p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- 引擎放 body 末尾：此时上面的 DOM 已存在，脚本可直接操作 -->
+<script src="../engine.js"></script>
+</body>
+</html>

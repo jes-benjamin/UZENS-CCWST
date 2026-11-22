@@ -1,0 +1,64 @@
+/* global.txt —— 全站配置（所有页面都加载它）
+   后缀是 .txt，内容其实是 JS：用 <script src> 当脚本加载，所以双击 file:// 也能用。
+   规则：只改单引号里的文字，别删逗号、花括号、方括号。 */
+
+window.SITE_PAGES = window.SITE_PAGES || {};
+
+window.SITE_PAGES.global = {
+
+    /* 站点信息 */
+    siteInfo: {
+        title: '我的网站',
+        description: '网站描述内容',
+        logo: ''
+    },
+
+    /* 网站整体字体：'#' = 用默认 */
+    font: { site: '#' },
+
+    /* 网站背景：image 留空用默认渐变；blur/brightness 填 '#' 用默认 */
+    background: {
+        image: '',
+        color: '#',
+        blur: '#',
+        brightness: '#',
+        overlay: true,
+        tone: '#'
+    },
+
+    /* 图片滤镜（可选，默认不生效） */
+    imageFx: {},
+
+    /* 导航菜单：i18n 是文案字段名，href 是链接，page 用于高亮 */
+    nav: [
+        { i18n: 'nav_home', href: './index.html', page: 'index' }
+    ],
+
+    /* 全站通用文案（四语言字典）。页面元素写 data-i18n="字段名" 即可取值。 */
+    i18n: {
+        zh: {
+            docTitle: '标题', brand: '我的网站',
+            nav_home: '首页', theme_toggle: '切换主题',
+            footer: '页脚内容', toast_unset: '未配置',
+            modal_title: '标题', modal_hint: '弹窗内容', modal_close: '关闭'
+        },
+        en: {
+            docTitle: 'Title', brand: 'My Site',
+            nav_home: 'Home', theme_toggle: 'Toggle theme',
+            footer: 'Footer content', toast_unset: 'Not configured',
+            modal_title: 'Title', modal_hint: 'Content', modal_close: 'Close'
+        },
+        tw: {
+            docTitle: '標題', brand: '我的網站',
+            nav_home: '首頁', theme_toggle: '切換主題',
+            footer: '頁腳內容', toast_unset: '未設定',
+            modal_title: '標題', modal_hint: '彈窗內容', modal_close: '關閉'
+        },
+        ja: {
+            docTitle: 'タイトル', brand: 'マイサイト',
+            nav_home: 'ホーム', theme_toggle: 'テーマ切替',
+            footer: 'フッター', toast_unset: '未設定',
+            modal_title: 'タイトル', modal_hint: '内容', modal_close: '閉じる'
+        }
+    }
+};
